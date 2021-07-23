@@ -1,8 +1,8 @@
 import pprint as p
 
 
-def pp(input):
-    p.pprint(input)
+def pp(i):
+    p.pprint(i)
 
 
 def convert12(str):  # sourcery skip: assign-if-exp, hoist-statement-from-if
