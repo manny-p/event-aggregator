@@ -13,17 +13,25 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://localhost:5432/ev
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+la = 'Los Angeles'
+sf = 'San Francisco'
+
+
+@app.get('/')
+def index():
+    return {'la events': get_event_details_by_city(la)}
+
 
 class Event(db.Model):
     id = db.Column(db.Integer, Sequence('id_sequence'), primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.String(100), nullable=False)
-    time = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    date = db.Column(db.String(255), nullable=False)
+    time = db.Column(db.String(255), nullable=False)
     date_time = db.Column(db.DateTime, nullable=False)
-    city = db.Column(db.String(100), nullable=False)
-    genre = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(255), nullable=False)
+    genre = db.Column(db.String(255), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
-    tix_url = db.Column(db.String(100), nullable=False)
+    tix_url = db.Column(db.Text, nullable=False)
 
 
 def get_data(base_url):
@@ -42,13 +50,9 @@ def get_data(base_url):
     return data
 
 
-data = get_data('https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&page=01&size=100')
-us_data = data['_embedded']['events']
-la = 'Los Angeles'
-sf = 'San Francisco'
-
-
 def get_events_by_city(city):
+    data = get_data('https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&page=01&size=200')
+    us_data = data['_embedded']['events']
     events_by_city = []
 
     for event in us_data:
@@ -60,7 +64,7 @@ def get_events_by_city(city):
     return events_by_city
 
 
-test_endpoint_la = get_events_by_city(la)
+# test_endpoint_la = get_events_by_city(la)
 
 
 def get_event_details_by_city(city):
@@ -82,7 +86,7 @@ def get_event_details_by_city(city):
             {
                 'name': event_name,
                 'date': event_date,
-                'time': convert12(event_time),
+                'time': event_time,
                 'date_time': parser.parse(event_date_time),
                 'city': event_city,
                 'genre': event_genre,
@@ -94,7 +98,7 @@ def get_event_details_by_city(city):
     return results
 
 
-upcoming_la_events = get_event_details_by_city(la)
+# upcoming_la_events = get_event_details_by_city(la)
 
 
 def write_db(results):
@@ -111,5 +115,3 @@ def write_db(results):
 
         ))
     db.session.commit()
-
-
