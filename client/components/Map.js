@@ -9,8 +9,9 @@ import {
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,
-    Input,
-    Button
+    Button,
+    Box,
+    Image,
 } from "@chakra-ui/react"
 import { useDisclosure } from '@chakra-ui/react';
 import { Context } from '../pages/_app'
