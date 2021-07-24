@@ -7,10 +7,13 @@ import {
     Th,
     Td,
     TableCaption,
+    Button
 } from '@chakra-ui/react'
 
 
-export default function TableComponent() {
+
+export default function TableComponent(props) {
+    const { cityEvents } = props
     return (
         <Table variant="striped" colorScheme="teal">
             <TableCaption>Upcoming Events</TableCaption>
@@ -26,30 +29,31 @@ export default function TableComponent() {
                 </Tr>
             </Thead>
             <Tbody>
-                <Tr>
-                    <Td>name</Td>
-                    <Td>date</Td>
-                    <Td>time</Td>
-                    <Td>city</Td>
-                    <Td isNumeric>25.4</Td>
-                    <Td>zipcode</Td>
-                </Tr>
-                <Tr>
-                    <Td>feet</Td>
-                    <Td>centimetres (cm)</Td>
-                    <Td isNumeric>30.48</Td>
-                </Tr>
-                <Tr>
-                    <Td>yards</Td>
-                    <Td>metres (m)</Td>
-                    <Td isNumeric>0.91444</Td>
-                </Tr>
+                {cityEvents.map((event, i) => (
+                    <Tr key={i}>
+                        <Td>{event.name}</Td>
+                        <Td>{event.date}</Td>
+                        <Td>{event.time}</Td>
+                        <Td>{event.city}</Td>
+                        <Td>{event.zipcode}</Td>
+                        <Td>{event.genre}</Td>
+                        <Td>
+                            <Button onClick={() => window.open(event.tix_url, '_blank')} colorScheme="teal" variant="solid">
+                                View Tickets
+                            </Button>
+                        </Td>
+                    </Tr>
+                ))}
             </Tbody>
             <Tfoot>
                 <Tr>
-                    <Th>To convert</Th>
-                    <Th>into</Th>
-                    <Th isNumeric>multiply by</Th>
+                    <Th>footer</Th>
+                    <Th>footer</Th>
+                    <Th>footer</Th>
+                    <Th>footer</Th>
+                    <Th>footer</Th>
+                    <Th>footer</Th>
+                    <Th>footer</Th>
                 </Tr>
             </Tfoot>
         </Table>
