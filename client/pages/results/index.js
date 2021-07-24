@@ -1,12 +1,13 @@
 import Head from 'next/head'
 import {Container} from '@chakra-ui/react'
-import { useState, useContext} from 'react';
+import { useState, useContext, useMemo} from 'react';
 import TableComponent from '../../components/Table';
 import { CitySearch } from '../../components/CitySearch';
 import { TabGroup } from '../../components/TabGroup'
 import { Context } from '../_app'
 import styles from '../../styles/Home.module.css'
 import _ from 'lodash'
+import dynamic from 'next/dynamic';
 
 export default function Results() {
 
@@ -17,6 +18,15 @@ export default function Results() {
     } = useContext(Context)
 
     const [mapView, setMapView] = useState(true)
+
+    const Map = useMemo(() => dynamic(
+        () => import('../../components/Map'),
+        {
+            // eslint-disable-next-line react/display-name
+            loading: () => <p>A map is loading</p>,
+            ssr: false // This line is important. It's what prevents server-side render
+        }
+    ), [/* list variables which should trigger a re-render here */])
 
     return (
         <div>
@@ -31,7 +41,7 @@ export default function Results() {
                     <TabGroup setMapView={setMapView}/>
                     <CitySearch locations={!_.isEmpty(eventLocations) ? Object.keys(eventLocations) : []} selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>
                     {mapView
-                        ? <p>Loading</p>
+                        ? <Map/>
                         : <TableComponent cityEvents={selectedCity ? eventLocations[selectedCity] : []}/>
                     }
                 </Container>
