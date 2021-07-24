@@ -3,15 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.schema import Sequence
 from config import TOKEN
 from helper import *
-import pprint as p
 import requests
-import psycopg2
 from dateutil import parser
+from flask_cors import CORS
+
+# import psycopg2
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://localhost:5432/events'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+CORS(app)
 
 la = 'Los Angeles'
 sf = 'San Francisco'
@@ -32,6 +34,9 @@ class Event(db.Model):
     genre = db.Column(db.String(255), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
     tix_url = db.Column(db.Text, nullable=False)
+    lat = db.Column(db.Float, nullable=False)
+    lon = db.Column(db.Float, nullable=False)
+    image = db.Column(db.String(255), nullable=False)
 
 
 def get_data(base_url):
@@ -51,7 +56,7 @@ def get_data(base_url):
 
 
 def get_events_by_city(city):
-    data = get_data('https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&page=01&size=200')
+    data = get_data('https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&page=0&size=200&sort=random')
     us_data = data['_embedded']['events']
     events_by_city = []
 
@@ -80,7 +85,10 @@ def get_event_details_by_city(city):
         event_genre = event['classifications'][0]['subGenre']['name']
         event_city = event['_embedded']['venues'][0]['city']['name']
         event_zipcode = event['_embedded']['venues'][0]['postalCode']
+        event_lat = event['_embedded']['venues'][0]['location']['latitude']
+        event_lon = event['_embedded']['venues'][0]['location']['longitude']
         event_tix = event['url']
+        event_image = event['_embedded']['attractions'][0]['images'][2]['url']
 
         results.append(
             {
@@ -91,7 +99,10 @@ def get_event_details_by_city(city):
                 'city': event_city,
                 'genre': event_genre,
                 'zipcode': int(event_zipcode),
-                'tix_url': event_tix
+                'tix_url': event_tix,
+                'lat': float(event_lat),
+                'lon': float(event_lon),
+                'image': event_image
             }
         )
     pp(results)
@@ -112,6 +123,9 @@ def write_db(results):
             genre=row['genre'],
             zipcode=row['zipcode'],
             tix_url=row['tix_url'],
+            lat=row['lat'],
+            lon=row['lon'],
+            image=row['image']
 
         ))
     db.session.commit()
