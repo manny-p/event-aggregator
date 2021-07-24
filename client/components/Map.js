@@ -44,8 +44,9 @@ const Map = (props) => {
         })
         return uniques
     }
+    const centerCoordinates = !_.isEmpty(cityEvents) ? [cityEvents[0].lat, cityEvents[0].lon] : [0,0]
     return (
-        <MapContainer center={[0, 0]} zoom={2} scrollWheelZoom={false} style={{height: 400, width: "100%"}}>
+        <MapContainer center={centerCoordinates} zoom={8} scrollWheelZoom={false} style={{height: 400, width: "100%"}}>
             <TileLayer
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -106,9 +107,9 @@ const Map = (props) => {
 
                                                     <Box>
                                                         {event.dateTime}
-                                                        <Box as="span" color="gray.600" fontSize="sm">
-                                                            / wk
-                                                        </Box>
+                                                        <Button onClick={() => window.open(event.tix_url, '_blank')} colorScheme="teal" variant="solid">
+                                                            View Tickets
+                                                        </Button>
                                                     </Box>
                                                 </Box>
                                             </Box>
