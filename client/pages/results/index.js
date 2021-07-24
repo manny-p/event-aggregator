@@ -27,7 +27,7 @@ export default function Results() {
             ssr: false // This line is important. It's what prevents server-side render
         }
     ), [/* list variables which should trigger a re-render here */])
-
+    const cityEvents = selectedCity ? eventLocations[selectedCity] : []
     return (
         <div>
             <Head>
@@ -41,8 +41,8 @@ export default function Results() {
                     <TabGroup setMapView={setMapView}/>
                     <CitySearch locations={!_.isEmpty(eventLocations) ? Object.keys(eventLocations) : []} selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>
                     {mapView
-                        ? <Map/>
-                        : <TableComponent cityEvents={selectedCity ? eventLocations[selectedCity] : []}/>
+                        ? <Map cityEvents={cityEvents} />
+                        : <TableComponent cityEvents={cityEvents}/>
                     }
                 </Container>
             </main>

@@ -8,15 +8,14 @@ function GlobalStateProvider({children}) {
 
     const [eventLocations, setEventLocations] = useState({})
     const [selectedCity, setSelectedCity] = useState('')
-    const [selectedZipCode, setSelectedZipCode] = useState(null)
-
+    const [selectedCoordinates, setSelectedCoordinates] = useState([null, null])
     const initialState = {
         eventLocations,
         setEventLocations,
         selectedCity,
         setSelectedCity,
-        selectedZipCode,
-        setSelectedZipCode,
+        selectedCoordinates,
+        setSelectedCoordinates
     }
 
     return <Context.Provider value={initialState}>{children}</Context.Provider>
