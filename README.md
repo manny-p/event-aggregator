@@ -5,6 +5,8 @@
 ```
 Next.js
 Chakra UI
+Leaflet
+Framer Motion
 ```
 
 ### Server
