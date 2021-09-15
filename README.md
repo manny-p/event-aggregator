@@ -12,6 +12,10 @@ Chakra UI
 Flask 
 SqlAlchemy
 ```
+### Server
+```
+PostgreSQL
+```
 
 ## API 
 - Ticketmaster 
