@@ -12,7 +12,7 @@ Chakra UI
 Flask 
 SqlAlchemy
 ```
-### Server
+### Database
 ```
 PostgreSQL
 ```
