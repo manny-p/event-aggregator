@@ -1,6 +1,5 @@
 # Event Aggregator
-- Discover upcoming events in your city by searching across Ticketmaster, Meetup, and Eventbrite
-
+- Discover upcoming events in your city by searching across Ticketmaster
 ## Technologies
 ### Client
 ```
