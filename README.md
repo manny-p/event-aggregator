@@ -5,7 +5,6 @@
 ### Client
 ```
 Next.js
-D3
 Chakra UI
 ```
 
