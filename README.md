@@ -1,5 +1,5 @@
 # Event Aggregator
-- Discover upcoming events in your city by searching across Ticketmaster
+- Discover upcoming events in your city by searching Ticketmaster API 
 ## Technologies
 ### Client
 ```
